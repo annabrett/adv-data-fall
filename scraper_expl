@@ -1,0 +1,40 @@
+import requests, mechanize
+# you ask python to download the webpage basically using Python's request library and the mechanize tool
+
+from bs4 import BeautifulSoup
+# from the beautiful soup 4th version import the beautiful soup tool, which is an HTML parser
+
+url = 'https://report.boonecountymo.org/mrcjava/servlet/SH01_MP.I00290s?max_rows=500'
+# this is just showing what url to use
+
+br = mechanize.Browser()
+br.open(url)
+html = br.response().read()
+# open the link and get the body of the site in html
+
+soup = BeautifulSoup(html, "html.parser")
+# run beautiful soup tool, parse html as data
+
+main_table = soup.find('tbody',
+    {'id': 'mrc_main_table'}
+)
+# tells the beautiful soup tool to look in the main table by the identification of "mrc_main_table"
+
+row_list = main_table.find_all('tr')
+
+# find all in the table's rows and create item called row_list
+
+for r in row_list:
+
+# for rows in the row_list:
+
+    cell_list = r.find_all('td')
+
+    if len(cell_list) > 0:
+        for c in cell_list:
+            print c.text.strip()
+
+        print '----------'
+
+#find things marked 'td', if length of cell list is greater than 0, for the cell in the list, print the text in the cell, then print it as a string. 
+print 'IT WORKED!'
